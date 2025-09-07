@@ -1,0 +1,252 @@
+[
+  {
+    "trainId": "KM-001",
+    "status": "Service",
+    "mileage": 12500,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-15",
+    "nextMaintenance": "2024-12-15"
+  },
+  {
+    "trainId": "KM-002",
+    "status": "Maintenance",
+    "mileage": 11800,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "In Progress",
+    "lastMaintenance": "2024-11-10",
+    "nextMaintenance": "2024-12-10"
+  },
+  {
+    "trainId": "KM-003",
+    "status": "Service",
+    "mileage": 13200,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-05",
+    "nextMaintenance": "2024-12-05"
+  },
+  {
+    "trainId": "KM-004",
+    "status": "Service",
+    "mileage": 14500,
+    "branding": "Kochi Metro",
+    "fitness": "Fair",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-20",
+    "nextMaintenance": "2024-12-20"
+  },
+  {
+    "trainId": "KM-005",
+    "status": "Service",
+    "mileage": 9800,
+    "branding": "Kochi Metro",
+    "fitness": "Excellent",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-25",
+    "nextMaintenance": "2024-12-25"
+  },
+  {
+    "trainId": "KM-006",
+    "status": "Standby",
+    "mileage": 15600,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Pending",
+    "lastMaintenance": "2024-10-30",
+    "nextMaintenance": "2024-11-30"
+  },
+  {
+    "trainId": "KM-007",
+    "status": "Standby",
+    "mileage": 16800,
+    "branding": "Kochi Metro",
+    "fitness": "Fair",
+    "jobCardStatus": "Pending",
+    "lastMaintenance": "2024-10-15",
+    "nextMaintenance": "2024-11-15"
+  },
+  {
+    "trainId": "KM-008",
+    "status": "Standby",
+    "mileage": 14200,
+    "branding": "Kochi Metro",
+    "fitness": "Fair",
+    "jobCardStatus": "Pending",
+    "lastMaintenance": "2024-11-18",
+    "nextMaintenance": "2024-12-18"
+  },
+  {
+    "trainId": "KM-009",
+    "status": "Service",
+    "mileage": 11200,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-12",
+    "nextMaintenance": "2024-12-12"
+  },
+  {
+    "trainId": "KM-010",
+    "status": "Service",
+    "mileage": 13900,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-08",
+    "nextMaintenance": "2024-12-08"
+  },
+  {
+    "trainId": "KM-011",
+    "status": "Service",
+    "mileage": 12400,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-14",
+    "nextMaintenance": "2024-12-14"
+  },
+  {
+    "trainId": "KM-012",
+    "status": "Standby",
+    "mileage": 15100,
+    "branding": "Kochi Metro",
+    "fitness": "Fair",
+    "jobCardStatus": "Pending",
+    "lastMaintenance": "2024-11-22",
+    "nextMaintenance": "2024-12-22"
+  },
+  {
+    "trainId": "KM-013",
+    "status": "Service",
+    "mileage": 10600,
+    "branding": "Kochi Metro",
+    "fitness": "Excellent",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-28",
+    "nextMaintenance": "2024-12-28"
+  },
+  {
+    "trainId": "KM-014",
+    "status": "Maintenance",
+    "mileage": 14700,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "In Progress",
+    "lastMaintenance": "2024-11-02",
+    "nextMaintenance": "2024-12-02"
+  },
+  {
+    "trainId": "KM-015",
+    "status": "Service",
+    "mileage": 13300,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-16",
+    "nextMaintenance": "2024-12-16"
+  },
+  {
+    "trainId": "KM-016",
+    "status": "Standby",
+    "mileage": 15900,
+    "branding": "Kochi Metro",
+    "fitness": "Fair",
+    "jobCardStatus": "Pending",
+    "lastMaintenance": "2024-11-19",
+    "nextMaintenance": "2024-12-19"
+  },
+  {
+    "trainId": "KM-017",
+    "status": "Service",
+    "mileage": 11700,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-11",
+    "nextMaintenance": "2024-12-11"
+  },
+  {
+    "trainId": "KM-018",
+    "status": "Service",
+    "mileage": 14100,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-06",
+    "nextMaintenance": "2024-12-06"
+  },
+  {
+    "trainId": "KM-019",
+    "status": "Maintenance",
+    "mileage": 12800,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "In Progress",
+    "lastMaintenance": "2024-11-13",
+    "nextMaintenance": "2024-12-13"
+  },
+  {
+    "trainId": "KM-020",
+    "status": "Standby",
+    "mileage": 15300,
+    "branding": "Kochi Metro",
+    "fitness": "Fair",
+    "jobCardStatus": "Pending",
+    "lastMaintenance": "2024-11-21",
+    "nextMaintenance": "2024-12-21"
+  },
+  {
+    "trainId": "KM-021",
+    "status": "Service",
+    "mileage": 10900,
+    "branding": "Kochi Metro",
+    "fitness": "Excellent",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-26",
+    "nextMaintenance": "2024-12-26"
+  },
+  {
+    "trainId": "KM-022",
+    "status": "Service",
+    "mileage": 13600,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-04",
+    "nextMaintenance": "2024-12-04"
+  },
+  {
+    "trainId": "KM-023",
+    "status": "Service",
+    "mileage": 12100,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-17",
+    "nextMaintenance": "2024-12-17"
+  },
+  {
+    "trainId": "KM-024",
+    "status": "Standby",
+    "mileage": 15700,
+    "branding": "Kochi Metro",
+    "fitness": "Fair",
+    "jobCardStatus": "Pending",
+    "lastMaintenance": "2024-11-23",
+    "nextMaintenance": "2024-12-23"
+  },
+  {
+    "trainId": "KM-025",
+    "status": "Service",
+    "mileage": 11400,
+    "branding": "Kochi Metro",
+    "fitness": "Good",
+    "jobCardStatus": "Active",
+    "lastMaintenance": "2024-11-09",
+    "nextMaintenance": "2024-12-09"
+  }
+]
