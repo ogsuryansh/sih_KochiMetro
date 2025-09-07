@@ -45,7 +45,7 @@ const DashboardPage = () => {
 
   const fetchFleetSummary = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/summary`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://sihkochimetro.vercel.app'}/api/dashboard/summary`);
       if (response.data.success) {
         setFleetSummary(response.data.data);
       }
@@ -62,7 +62,7 @@ const DashboardPage = () => {
   const fetchTrains = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/trains`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://sihkochimetro.vercel.app'}/api/dashboard/trains`);
       if (response.data.success) {
         setTrains(response.data.data);
       }
@@ -81,7 +81,7 @@ const DashboardPage = () => {
   const runAIOptimization = async () => {
     try {
       setAiLoading(true);
-      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/ai/optimize`);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'https://sihkochimetro.vercel.app'}/api/ai/optimize`);
       
       if (response.data.success) {
         setOptimizationResult(response.data.data);

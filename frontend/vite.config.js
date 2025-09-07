@@ -11,6 +11,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: undefined,
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
       },
     },
   },
@@ -22,4 +25,5 @@ export default defineConfig({
     port: 3000,
     host: true,
   },
+  base: '/',
 })

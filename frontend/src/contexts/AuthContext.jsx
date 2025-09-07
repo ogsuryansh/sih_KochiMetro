@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/login`, credentials);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'https://sihkochimetro.vercel.app'}/api/auth/login`, credentials);
       
       if (response.data.success) {
         const { user: userData, token: userToken } = response.data;
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/logout`);
+      await axios.post(`${import.meta.env.VITE_API_URL || 'https://sihkochimetro.vercel.app'}/api/auth/logout`);
     } catch (error) {
       console.error('Logout error:', error);
     } finally {

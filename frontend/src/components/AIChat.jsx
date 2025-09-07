@@ -70,7 +70,7 @@ const AIChat = () => {
     
     try {
       // Fetch real train data
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/trains`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://sihkochimetro.vercel.app'}/api/dashboard/trains`);
       const trains = response.data.success ? response.data.data : [];
       
       if (input.includes('train') && (input.includes('running') || input.includes('service'))) {
