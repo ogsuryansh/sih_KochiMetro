@@ -17,6 +17,8 @@ const corsOptions = {
       'http://127.0.0.1:5173',
       'https://kochimetro.netlify.app',
       'https://kochimetro.netlify.app/',
+      'https://sihkochimetro.netlify.app',
+      'https://sihkochimetro.netlify.app/',
       'https://sihkochimetro.vercel.app'
     ];
     
@@ -28,7 +30,8 @@ const corsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
