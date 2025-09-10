@@ -7,7 +7,8 @@ import AIChat from '../components/AIChat';
 import axios from 'axios';
 
 const DashboardPage = () => {
-  const { user } = useAuth();
+  const { user } = useAuth();    
+  
   const [fleetSummary, setFleetSummary] = useState(null);
   const [trains, setTrains] = useState([]);
   const [filteredTrains, setFilteredTrains] = useState([]);
