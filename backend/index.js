@@ -37,10 +37,14 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
 const aiRoutes = require('./routes/ai');
+const uploadRoutes = require('./routes/upload');
+const mappingRoutes = require('./routes/mapping');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/mapping', mappingRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
