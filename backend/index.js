@@ -8,8 +8,13 @@ const PORT = process.env.PORT || 5000;
 // CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log('CORS request from origin:', origin);
+    
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('No origin, allowing request');
+      return callback(null, true);
+    }
     
     const allowedOrigins = [
       'http://localhost:5173', 
@@ -22,9 +27,14 @@ const corsOptions = {
       'https://sihkochimetro.vercel.app'
     ];
     
+    console.log('Allowed origins:', allowedOrigins);
+    console.log('Checking origin:', origin);
+    
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('Origin allowed');
       callback(null, true);
     } else {
+      console.log('Origin not allowed:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -50,7 +60,21 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/mapping', mappingRoutes);
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    timestamp: new Date().toISOString(),
+    cors: 'enabled'
+  });
+});
+
+// Add a simple test endpoint for CORS
+app.get('/api/test-cors', (req, res) => {
+  res.json({ 
+    message: 'CORS test successful',
+    origin: req.headers.origin,
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.use((err, req, res, next) => {
