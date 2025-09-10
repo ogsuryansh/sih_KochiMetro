@@ -7,9 +7,9 @@ const Card = ({
   gradient = false,
   ...props 
 }) => {
-  const baseClasses = 'rounded-xl border border-gray-700 p-6 transition-all duration-300';
+  const baseClasses = 'rounded-xl border border-slate-200 dark:border-slate-600 p-6 transition-all duration-300';
   const hoverClasses = hover ? 'hover:shadow-xl hover:shadow-teal-500/10 hover:border-teal-500/30 hover:-translate-y-1' : '';
-  const gradientClasses = gradient ? 'card-gradient' : 'bg-gray-800/50 backdrop-blur-sm';
+  const gradientClasses = gradient ? 'card-gradient' : 'bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm';
   
   return (
     <div 

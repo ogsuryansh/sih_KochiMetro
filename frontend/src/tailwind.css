@@ -5,22 +5,36 @@
 }
 
 @layer base {
+  * {
+    @apply border-slate-200 dark:border-slate-700;
+  }
+  
   body {
-    @apply bg-gray-900 text-white font-sans;
+    @apply bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-sans transition-colors duration-200;
   }
   
   html {
     @apply scroll-smooth;
   }
+  
+  /* Ensure dark mode classes are properly applied */
+  .dark {
+    color-scheme: dark;
+  }
 }
 
 @layer components {
+  /* Override Tailwind's gradient position for horizontal gradients */
+  .bg-gradient-to-r {
+    --tw-gradient-position: unset !important;
+  }
+  
   .gradient-bg {
-    @apply bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900;
+    @apply bg-gradient-to-r from-blue-50 to-blue-100 dark:from-slate-900 dark:via-slate-800 dark:to-blue-900;
   }
   
   .card-gradient {
-    @apply bg-gradient-to-br from-gray-800/50 to-gray-700/50 backdrop-blur-sm;
+    @apply bg-gradient-to-r from-white/80 to-slate-50/80 dark:from-slate-800/50 dark:to-slate-700/50 backdrop-blur-sm;
   }
   
   .button-gradient {
@@ -29,5 +43,16 @@
   
   .button-gradient-primary {
     @apply bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700;
+  }
+  
+  /* Test dark mode classes */
+  .test-dark-mode {
+    background-color: #f1f5f9;
+    color: #0f172a;
+  }
+  
+  .dark .test-dark-mode {
+    background-color: #0f172a;
+    color: #f8fafc;
   }
 }

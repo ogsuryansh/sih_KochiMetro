@@ -9,13 +9,13 @@ const Button = ({
   className = '',
   ...props 
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed';
   
   const variants = {
     primary: 'button-gradient text-white shadow-lg hover:shadow-xl focus:ring-teal-500',
-    secondary: 'bg-gray-700 text-white border border-gray-600 hover:bg-gray-600 hover:border-gray-500 focus:ring-gray-500',
-    outline: 'border-2 border-teal-500 text-teal-400 hover:bg-teal-500 hover:text-white focus:ring-teal-500',
-    ghost: 'text-gray-400 hover:text-white hover:bg-gray-700 focus:ring-gray-500',
+    secondary: 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-500 hover:bg-slate-200 dark:hover:bg-slate-600 hover:border-slate-400 dark:hover:border-slate-400 focus:ring-slate-500',
+    outline: 'border-2 border-teal-500 text-teal-600 dark:text-teal-400 hover:bg-teal-500 hover:text-white focus:ring-teal-500',
+    ghost: 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-600 focus:ring-slate-500',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500'
   };
   
