@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import Card from '../components/Card';
 
 const ReportsPage = () => {
-  const { user } = useAuth();
   const [trainsData, setTrainsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState('7');
@@ -157,27 +155,6 @@ const ReportsPage = () => {
     return data;
   };
 
-  // Generate line chart data for fleet efficiency
-  const generateEfficiencyData = () => {
-    const days = 14;
-    const data = [];
-    
-    for (let i = days - 1; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      const dayName = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      
-      // Efficiency trend with some noise
-      const efficiency = 85 + Math.sin(i * 0.4) * 8 + Math.random() * 6 - 3;
-      
-      data.push({
-        day: dayName,
-        efficiency: Math.round(efficiency * 10) / 10
-      });
-    }
-    
-    return data;
-  };
 
   // Generate mileage distribution data
   const generateMileageData = () => {
