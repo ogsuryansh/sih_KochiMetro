@@ -20,11 +20,10 @@ const corsOptions = {
       'http://localhost:5173', 
       'http://localhost:3000', 
       'http://127.0.0.1:5173',
-      'https://kochimetro.netlify.app',
-      'https://kochimetro.netlify.app/',
-      'https://sihkochimetro.netlify.app',
-      'https://sihkochimetro.netlify.app/',
-      'https://sihkochimetro.vercel.app'
+      'https://mainkochimetro.netlify.app',
+      'https://mainkochimetro.netlify.app/',
+      'https://playful-khapse-1b40b2.netlify.app',
+      'https://playful-khapse-1b40b2.netlify.app/'
     ];
     
     console.log('Allowed origins:', allowedOrigins);
