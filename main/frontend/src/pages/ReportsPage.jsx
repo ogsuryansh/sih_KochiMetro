@@ -16,19 +16,21 @@ const ReportsPage = () => {
 
   const fetchTrainsData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/trains`);
+      const response = await fetch('/api/ai/plan/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          weights: { mileage: 0.6, fitness: 0.4 },
+          serviceCount: 20,
+          standbyCount: 3
+        })
+      });
       const data = await response.json();
-      if (data.success && data.data) {
-        setTrainsData(data.data);
-      } else {
-        console.error('Failed to fetch trains data:', data.message);
-        // Set empty array as fallback
-        setTrainsData([]);
+      if (data.success && data.items) {
+        setTrainsData(data.items);
       }
     } catch (error) {
       console.error('Failed to fetch trains data:', error);
-      // Set empty array as fallback
-      setTrainsData([]);
     } finally {
       setLoading(false);
     }
@@ -36,19 +38,14 @@ const ReportsPage = () => {
 
   // Export functions
   const exportToCSV = () => {
-    if (trainsData.length === 0) {
-      alert('No data available to export');
-      return;
-    }
-    
     const csvData = trainsData.map(train => ({
       'Train ID': train.trainId,
-      'Status': train.status,
+      'Assignment': train.assignment,
       'Mileage': train.mileage,
       'Fitness': train.fitness,
       'Job Card Status': train.jobCardStatus,
-      'Last Maintenance': train.lastMaintenance,
-      'Next Maintenance': train.nextMaintenance
+      'Score': train.score?.toFixed(2) || 'N/A',
+      'Eligible': train.eligible ? 'Yes' : 'No'
     }));
 
     const csvContent = [
@@ -89,15 +86,15 @@ const ReportsPage = () => {
           </div>
           <div class="summary">
             <div class="summary-item">
-              <h3>${trainsData.filter(t => t.status === 'Service').length}</h3>
+              <h3>${trainsData.filter(t => t.assignment === 'Service').length}</h3>
               <p>In Service</p>
             </div>
             <div class="summary-item">
-              <h3>${trainsData.filter(t => t.status === 'Standby').length}</h3>
+              <h3>${trainsData.filter(t => t.assignment === 'Standby').length}</h3>
               <p>Standby</p>
             </div>
             <div class="summary-item">
-              <h3>${trainsData.filter(t => t.status === 'Maintenance').length}</h3>
+              <h3>${trainsData.filter(t => t.assignment === 'IBL').length}</h3>
               <p>In Maintenance</p>
             </div>
           </div>
@@ -105,20 +102,20 @@ const ReportsPage = () => {
             <thead>
               <tr>
                 <th>Train ID</th>
-                <th>Status</th>
+                <th>Assignment</th>
                 <th>Mileage</th>
                 <th>Fitness</th>
-                <th>Job Card Status</th>
+                <th>Score</th>
               </tr>
             </thead>
             <tbody>
               ${trainsData.map(train => `
                 <tr>
                   <td>${train.trainId}</td>
-                  <td>${train.status}</td>
+                  <td>${train.assignment}</td>
                   <td>${train.mileage}</td>
                   <td>${train.fitness}</td>
-                  <td>${train.jobCardStatus}</td>
+                  <td>${train.score ? (train.score * 100).toFixed(0) + '%' : 'N/A'}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -226,21 +223,8 @@ const ReportsPage = () => {
   // Calculate performance metrics
   const calculatePerformanceMetrics = () => {
     const totalTrains = trainsData.length;
-    
-    // Handle empty data case
-    if (totalTrains === 0) {
-      return {
-        fleetAvailability: 0,
-        punctuality: 0,
-        maintenanceEfficiency: 0,
-        avgMileage: 0,
-        costPerKm: 0,
-        energyEfficiency: 0
-      };
-    }
-    
-    const serviceTrains = trainsData.filter(t => t.status === 'Service').length;
-    const maintenanceTrains = trainsData.filter(t => t.status === 'Maintenance').length;
+    const serviceTrains = trainsData.filter(t => t.assignment === 'Service').length;
+    const maintenanceTrains = trainsData.filter(t => t.assignment === 'IBL').length;
     const avgMileage = trainsData.reduce((sum, t) => sum + (t.mileage || 0), 0) / totalTrains;
     
     return {
@@ -262,7 +246,7 @@ const ReportsPage = () => {
     }
     
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(train => train.status === statusFilter);
+      filtered = filtered.filter(train => train.assignment === statusFilter);
     }
     
     return filtered;
@@ -373,7 +357,7 @@ const ReportsPage = () => {
                 <option value="all">All Status</option>
                 <option value="Service">Service</option>
                 <option value="Standby">Standby</option>
-                <option value="Maintenance">In Maintenance</option>
+                <option value="IBL">In Maintenance</option>
               </select>
             </div>
           </div>
@@ -527,19 +511,19 @@ const ReportsPage = () => {
               return [
                 { 
                   label: 'In Service', 
-                  count: filteredData.filter(t => t.status === 'Service').length,
+                  count: filteredData.filter(t => t.assignment === 'Service').length,
                   color: 'text-green-400',
                   icon: '🚀'
                 },
                 { 
                   label: 'Standby', 
-                  count: filteredData.filter(t => t.status === 'Standby').length,
+                  count: filteredData.filter(t => t.assignment === 'Standby').length,
                   color: 'text-yellow-400',
                   icon: '⏸️'
                 },
                 { 
                   label: 'In Maintenance', 
-                  count: filteredData.filter(t => t.status === 'Maintenance').length,
+                  count: filteredData.filter(t => t.assignment === 'IBL').length,
                   color: 'text-red-400',
                   icon: '🔧'
                 },

@@ -25,7 +25,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError, onUploadStart, onFileSelec
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'https://sihkochimetro.vercel.app'}/api/upload/trains`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/upload/trains`,
         formData,
         {
           headers: {

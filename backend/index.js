@@ -82,6 +82,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
+// Catch-all handler for undefined routes (must be last)
+app.use((req, res) => {
+  res.status(404).json({ message: 'API route not found' });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
