@@ -22,6 +22,10 @@ const corsOptions = {
       return callback(null, true);
     }
     
+    // Temporarily allow all origins for debugging
+    console.log('Allowing all origins for debugging');
+    return callback(null, true);
+    
     // Production: Allow specific domains
     const allowedOrigins = [
       'http://localhost:5173',
