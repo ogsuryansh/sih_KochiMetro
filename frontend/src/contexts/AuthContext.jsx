@@ -55,6 +55,7 @@ export const AuthProvider = ({ children }) => {
       // Try multiple API URLs as fallback
       const apiUrls = [
         config.API_URL,
+        'https://sihkochimetro.vercel.app/api', // Direct backend URL
         'http://localhost:5000',
         `http://${window.location.hostname}:5000`
       ];
@@ -103,6 +104,7 @@ export const AuthProvider = ({ children }) => {
       // Try multiple API URLs as fallback
       const apiUrls = [
         config.API_URL,
+        'https://sihkochimetro.vercel.app/api', // Direct backend URL
         'http://localhost:5000',
         `http://${window.location.hostname}:5000`
       ];
