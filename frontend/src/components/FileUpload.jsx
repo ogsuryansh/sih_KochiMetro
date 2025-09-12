@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import config from '../../config.js';
 
 const FileUpload = ({ onUploadSuccess, onUploadError, onUploadStart, onFileSelected }) => {
   const [uploading, setUploading] = useState(false);
@@ -25,7 +26,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError, onUploadStart, onFileSelec
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/upload/trains`,
+        `${config.API_URL}/api/upload/trains`,
         formData,
         {
           headers: {

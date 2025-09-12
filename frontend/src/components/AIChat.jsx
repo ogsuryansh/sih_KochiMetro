@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import config from '../../config.js';
 
 const AIChat = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +71,7 @@ const AIChat = () => {
     
     try {
       // Fetch real train data
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/trains`);
+      const response = await axios.get(`${config.API_URL}/api/dashboard/trains`);
       const trains = response.data.success ? response.data.data : [];
       
       if (input.includes('train') && (input.includes('running') || input.includes('service'))) {

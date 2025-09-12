@@ -7,6 +7,7 @@ import FileUpload from '../components/FileUpload';
 import DataPreview from '../components/DataPreview';
 import FieldMapping from '../components/FieldMapping';
 import axios from 'axios';
+import config from '../../config.js';
 
 const DataUploadPage = () => {
   const { user } = useAuth();
@@ -33,7 +34,7 @@ const DataUploadPage = () => {
   const fetchUploadInfo = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/upload/info`
+        `${config.API_URL}/api/upload/info`
       );
       if (response.data.success) {
         setUploadInfo(response.data.data);
@@ -94,7 +95,7 @@ const DataUploadPage = () => {
     
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/upload/trains`,
+        `${config.API_URL}/api/upload/trains`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' }
@@ -133,7 +134,7 @@ const DataUploadPage = () => {
     // Now upload with custom mapping
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/mapping/apply`,
+        `${config.API_URL}/api/mapping/apply`,
         {
           filePath: tempFilePath,
           fileType: `.${fileType}`,

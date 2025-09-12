@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../components/Card';
+import config from '../../config.js';
 
 const ReportsPage = () => {
   const [trainsData, setTrainsData] = useState([]);
@@ -14,7 +15,7 @@ const ReportsPage = () => {
 
   const fetchTrainsData = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/trains`);
+      const response = await fetch(`${config.API_URL}/api/dashboard/trains`);
       const data = await response.json();
       if (data.success && data.data) {
         setTrainsData(data.data);
