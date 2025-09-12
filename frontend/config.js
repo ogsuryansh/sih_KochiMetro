@@ -38,19 +38,9 @@ const config = {
       return productionConfig.API_URL;
     }
     
-    // Development mode - auto-detect based on hostname
-    const hostname = window.location.hostname;
-    
-    // If running on localhost or 127.0.0.1, use localhost for API
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      console.log('✅ Development mode - using localhost API');
-      return 'http://localhost:5000';
-    }
-    
-    // If running on any other IP (like 192.168.x.x), use the same IP for API
-    const devUrl = `http://${hostname}:5000`;
-    console.log('✅ Development mode - using IP API:', devUrl);
-    return devUrl;
+    // Development mode - use production config as fallback
+    console.log('⚠️ No environment variable found, using production config as fallback');
+    return productionConfig.API_URL;
   }
 };
 

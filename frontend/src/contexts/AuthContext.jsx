@@ -52,26 +52,15 @@ export const AuthProvider = ({ children }) => {
       
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Try multiple API URLs as fallback
-      let apiUrls = [];
+      // Use config API URL as primary, with production fallback
+      let apiUrls = [config.API_URL];
       
-      // FORCE PRODUCTION URL FIRST if on Netlify/Vercel
-      if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
-        apiUrls = [
-          'https://sihkochimetro.vercel.app', // Force production first
-          config.API_URL,
-          'http://localhost:5000',
-          `http://${window.location.hostname}:5000`
-        ];
-        console.log('🚀 FORCING PRODUCTION URL FIRST for Netlify/Vercel');
-      } else {
-        apiUrls = [
-          config.API_URL,
-          'https://sihkochimetro.vercel.app', // Direct backend URL
-          'http://localhost:5000',
-          `http://${window.location.hostname}:5000`
-        ];
+      // Add production fallback if not already included
+      if (!config.API_URL.includes('sihkochimetro.vercel.app')) {
+        apiUrls.push('https://sihkochimetro.vercel.app');
       }
+      
+      console.log('🔧 Using API URLs:', apiUrls);
       
       let response;
       let lastError;
@@ -120,13 +109,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      // Try multiple API URLs as fallback
-      const apiUrls = [
-        config.API_URL,
-        'https://sihkochimetro.vercel.app', // Direct backend URL
-        'http://localhost:5000',
-        `http://${window.location.hostname}:5000`
-      ];
+      // Use config API URL as primary, with production fallback
+      const apiUrls = [config.API_URL];
+      
+      // Add production fallback if not already included
+      if (!config.API_URL.includes('sihkochimetro.vercel.app')) {
+        apiUrls.push('https://sihkochimetro.vercel.app');
+      }
       
       for (const apiUrl of apiUrls) {
         try {
@@ -148,25 +137,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const testApiConnection = async () => {
-    let apiUrls = [];
+    // Use config API URL as primary, with production fallback
+    let apiUrls = [config.API_URL];
     
-    // FORCE PRODUCTION URL FIRST if on Netlify/Vercel
-    if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
-      apiUrls = [
-        'https://sihkochimetro.vercel.app', // Force production first
-        config.API_URL,
-        'http://localhost:5000',
-        `http://${window.location.hostname}:5000`
-      ];
-      console.log('🚀 FORCING PRODUCTION URL FIRST for Netlify/Vercel');
-    } else {
-      apiUrls = [
-        config.API_URL,
-        'https://sihkochimetro.vercel.app',
-        'http://localhost:5000',
-        `http://${window.location.hostname}:5000`
-      ];
+    // Add production fallback if not already included
+    if (!config.API_URL.includes('sihkochimetro.vercel.app')) {
+      apiUrls.push('https://sihkochimetro.vercel.app');
     }
+    
+    console.log('🔧 Testing API URLs:', apiUrls);
     
     for (const apiUrl of apiUrls) {
       try {

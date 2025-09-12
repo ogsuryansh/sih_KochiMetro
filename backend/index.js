@@ -22,11 +22,17 @@ const corsOptions = {
       return callback(null, true);
     }
     
-    // Production: Dynamic CORS configuration
-    const allowedOrigins = [
+    // Add development URLs only in development mode
+    const developmentOrigins = [
       'http://localhost:5173',
       'http://localhost:3000',
-      'http://127.0.0.1:5173',
+      'http://127.0.0.1:5173'
+    ];
+    
+    // Dynamic CORS configuration
+    const allowedOrigins = [
+      // Add development origins only in development mode
+      ...(process.env.NODE_ENV !== 'production' ? developmentOrigins : []),
       // Add frontend URL from environment variable
       process.env.FRONTEND_URL,
       // Add common Netlify and Vercel patterns
