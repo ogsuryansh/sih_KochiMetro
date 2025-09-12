@@ -55,10 +55,15 @@ export const AuthProvider = ({ children }) => {
       // Try multiple API URLs as fallback
       const apiUrls = [
         config.API_URL,
-        'https://sihkochimetro.vercel.app/api', // Direct backend URL
+        'https://sihkochimetro.vercel.app', // Direct backend URL
         'http://localhost:5000',
         `http://${window.location.hostname}:5000`
       ];
+      
+      // Force production URL first if on Netlify/Vercel
+      if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
+        apiUrls.unshift('https://sihkochimetro.vercel.app');
+      }
       
       let response;
       let lastError;
@@ -66,8 +71,8 @@ export const AuthProvider = ({ children }) => {
       for (const apiUrl of apiUrls) {
         try {
           console.log('Trying API URL:', apiUrl);
-          console.log('Full URL:', `${apiUrl}/auth/login`);
-          response = await axios.post(`${apiUrl}/auth/login`, credentials);
+          console.log('Full URL:', `${apiUrl}/api/auth/login`);
+          response = await axios.post(`${apiUrl}/api/auth/login`, credentials);
           console.log('✅ Successfully connected to:', apiUrl);
           break; // Success, exit the loop
         } catch (error) {
@@ -110,14 +115,14 @@ export const AuthProvider = ({ children }) => {
       // Try multiple API URLs as fallback
       const apiUrls = [
         config.API_URL,
-        'https://sihkochimetro.vercel.app/api', // Direct backend URL
+        'https://sihkochimetro.vercel.app', // Direct backend URL
         'http://localhost:5000',
         `http://${window.location.hostname}:5000`
       ];
       
       for (const apiUrl of apiUrls) {
         try {
-          await axios.post(`${apiUrl}/auth/logout`);
+          await axios.post(`${apiUrl}/api/auth/logout`);
           break; // Success, exit the loop
         } catch (error) {
           console.log('Logout failed for:', apiUrl, error.message);
@@ -137,15 +142,20 @@ export const AuthProvider = ({ children }) => {
   const testApiConnection = async () => {
     const apiUrls = [
       config.API_URL,
-      'https://sihkochimetro.vercel.app/api',
+      'https://sihkochimetro.vercel.app',
       'http://localhost:5000',
       `http://${window.location.hostname}:5000`
     ];
     
+    // Force production URL first if on Netlify/Vercel
+    if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
+      apiUrls.unshift('https://sihkochimetro.vercel.app');
+    }
+    
     for (const apiUrl of apiUrls) {
       try {
         console.log('Testing API connection to:', apiUrl);
-        const response = await axios.get(`${apiUrl}/health`);
+        const response = await axios.get(`${apiUrl}/api/health`);
         console.log('✅ API connection successful:', apiUrl, response.data);
         return { success: true, url: apiUrl, data: response.data };
       } catch (error) {

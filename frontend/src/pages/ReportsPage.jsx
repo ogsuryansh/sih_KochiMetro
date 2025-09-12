@@ -15,7 +15,7 @@ const ReportsPage = () => {
 
   const fetchTrainsData = async () => {
     try {
-      const response = await fetch(`${config.API_URL}/dashboard/trains`);
+      const response = await fetch(`${config.API_URL}/api/dashboard/trains`);
       const data = await response.json();
       if (data.success && data.data) {
         setTrainsData(data.data);

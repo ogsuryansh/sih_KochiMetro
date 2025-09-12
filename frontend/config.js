@@ -8,6 +8,7 @@ const config = {
     console.log('- Protocol:', window.location.protocol);
     console.log('- Hostname:', window.location.hostname);
     console.log('- Environment VITE_API_URL:', import.meta.env.VITE_API_URL);
+    console.log('- All env vars:', import.meta.env);
     
     // Check for environment variables first (highest priority)
     if (import.meta.env.VITE_API_URL) {
@@ -21,13 +22,21 @@ const config = {
                          !window.location.hostname.startsWith('192.168.') &&
                          !window.location.hostname.startsWith('10.') &&
                          !window.location.hostname.startsWith('172.') &&
-                         !window.location.hostname.includes('127.0.0.1'));
+                         !window.location.hostname.includes('127.0.0.1')) ||
+                        window.location.hostname.includes('netlify.app') ||
+                        window.location.hostname.includes('vercel.app');
     
     console.log('- Is Production:', isProduction);
     
     if (isProduction) {
       // In production, use the configured production API URL
       console.log('✅ Production mode - using API URL:', productionConfig.API_URL);
+      return productionConfig.API_URL;
+    }
+    
+    // Force production URL if on Netlify or Vercel
+    if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
+      console.log('✅ Detected Netlify/Vercel - forcing production API URL:', productionConfig.API_URL);
       return productionConfig.API_URL;
     }
     

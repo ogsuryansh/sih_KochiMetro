@@ -17,7 +17,7 @@ const AIPlanningPage = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${config.API_URL}/ai/plan/run`, {
+      const res = await fetch(`${config.API_URL}/api/ai/plan/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

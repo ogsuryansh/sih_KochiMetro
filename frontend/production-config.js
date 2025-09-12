@@ -2,7 +2,7 @@
 // Use this file to configure your production API URL
 
 const productionConfig = {
-  API_URL: 'https://sihkochimetro.vercel.app/api',
+  API_URL: 'https://sihkochimetro.vercel.app',
 };
 
 export default productionConfig;
