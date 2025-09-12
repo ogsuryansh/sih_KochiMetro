@@ -26,7 +26,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError, onUploadStart, onFileSelec
 
     try {
       const response = await axios.post(
-        `${config.API_URL}/api/upload/trains`,
+        `${config.API_URL}/upload/trains`,
         formData,
         {
           headers: {

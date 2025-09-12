@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import Card from '../components/Card';
+import config from '../../config.js';
 
 const AIPlanningPage = () => {
   const { user } = useAuth();
@@ -16,7 +17,7 @@ const AIPlanningPage = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('/api/ai/plan/run', {
+      const res = await fetch(`${config.API_URL}/ai/plan/run`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

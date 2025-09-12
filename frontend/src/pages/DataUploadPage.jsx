@@ -34,7 +34,7 @@ const DataUploadPage = () => {
   const fetchUploadInfo = async () => {
     try {
       const response = await axios.get(
-        `${config.API_URL}/api/upload/info`
+        `${config.API_URL}/upload/info`
       );
       if (response.data.success) {
         setUploadInfo(response.data.data);
@@ -95,7 +95,7 @@ const DataUploadPage = () => {
     
     try {
       const response = await axios.post(
-        `${config.API_URL}/api/upload/trains`,
+        `${config.API_URL}/upload/trains`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' }
@@ -134,7 +134,7 @@ const DataUploadPage = () => {
     // Now upload with custom mapping
     try {
       const response = await axios.post(
-        `${config.API_URL}/api/mapping/apply`,
+        `${config.API_URL}/mapping/apply`,
         {
           filePath: tempFilePath,
           fileType: `.${fileType}`,

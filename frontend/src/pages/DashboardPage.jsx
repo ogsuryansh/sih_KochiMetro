@@ -47,7 +47,7 @@ const DashboardPage = () => {
 
   const fetchFleetSummary = async () => {
     try {
-      const response = await axios.get(`${config.API_URL}/api/dashboard/summary`);
+      const response = await axios.get(`${config.API_URL}/dashboard/summary`);
       if (response.data.success) {
         setFleetSummary(response.data.data);
       }
@@ -64,7 +64,7 @@ const DashboardPage = () => {
   const fetchTrains = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${config.API_URL}/api/dashboard/trains`);
+      const response = await axios.get(`${config.API_URL}/dashboard/trains`);
       if (response.data.success) {
         setTrains(response.data.data);
       }
@@ -83,7 +83,7 @@ const DashboardPage = () => {
   const runAIOptimization = async () => {
     try {
       setAiLoading(true);
-      const response = await axios.post(`${config.API_URL}/api/ai/optimize`);
+      const response = await axios.post(`${config.API_URL}/ai/optimize`);
       
       if (response.data.success) {
         setOptimizationResult(response.data.data);

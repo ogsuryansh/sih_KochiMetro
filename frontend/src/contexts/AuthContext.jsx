@@ -66,10 +66,16 @@ export const AuthProvider = ({ children }) => {
       for (const apiUrl of apiUrls) {
         try {
           console.log('Trying API URL:', apiUrl);
-          response = await axios.post(`${apiUrl}/api/auth/login`, credentials);
+          console.log('Full URL:', `${apiUrl}/auth/login`);
+          response = await axios.post(`${apiUrl}/auth/login`, credentials);
+          console.log('✅ Successfully connected to:', apiUrl);
           break; // Success, exit the loop
         } catch (error) {
-          console.log('Failed to connect to:', apiUrl, error.message);
+          console.log('❌ Failed to connect to:', apiUrl, error.message);
+          if (error.response) {
+            console.log('Response status:', error.response.status);
+            console.log('Response data:', error.response.data);
+          }
           lastError = error;
         }
       }
@@ -111,7 +117,7 @@ export const AuthProvider = ({ children }) => {
       
       for (const apiUrl of apiUrls) {
         try {
-          await axios.post(`${apiUrl}/api/auth/logout`);
+          await axios.post(`${apiUrl}/auth/logout`);
           break; // Success, exit the loop
         } catch (error) {
           console.log('Logout failed for:', apiUrl, error.message);
@@ -128,12 +134,34 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const testApiConnection = async () => {
+    const apiUrls = [
+      config.API_URL,
+      'https://sihkochimetro.vercel.app/api',
+      'http://localhost:5000',
+      `http://${window.location.hostname}:5000`
+    ];
+    
+    for (const apiUrl of apiUrls) {
+      try {
+        console.log('Testing API connection to:', apiUrl);
+        const response = await axios.get(`${apiUrl}/health`);
+        console.log('✅ API connection successful:', apiUrl, response.data);
+        return { success: true, url: apiUrl, data: response.data };
+      } catch (error) {
+        console.log('❌ API connection failed:', apiUrl, error.message);
+      }
+    }
+    return { success: false, message: 'No API endpoints available' };
+  };
+
   const value = {
     user,
     token,
     loading,
     login,
     logout,
+    testApiConnection,
     isAuthenticated: !!user
   };
 

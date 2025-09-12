@@ -22,7 +22,7 @@ const corsOptions = {
       return callback(null, true);
     }
     
-    // Temporarily allow all origins for debugging
+    // Allow all origins for debugging - remove in production
     console.log('Allowing all origins for debugging');
     return callback(null, true);
     
@@ -74,12 +74,31 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/mapping', mappingRoutes);
 
+// Root endpoint for debugging
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'SIH Kochi Metro Backend API',
+    status: 'running',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      dashboard: '/api/dashboard',
+      ai: '/api/ai',
+      upload: '/api/upload',
+      mapping: '/api/mapping'
+    }
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     message: 'Server is running',
     timestamp: new Date().toISOString(),
-    cors: 'enabled'
+    cors: 'enabled',
+    origin: req.headers.origin,
+    userAgent: req.headers['user-agent']
   });
 });
 
