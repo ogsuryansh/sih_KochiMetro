@@ -26,10 +26,14 @@ const corsOptions = {
       'https://playful-khapse-1b40b2.netlify.app/'
     ];
     
+    // Allow all local network origins (192.168.x.x, 10.x.x.x, 172.16-31.x.x)
+    const isLocalNetwork = /^(http:\/\/)?(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(origin);
+    
     console.log('Allowed origins:', allowedOrigins);
     console.log('Checking origin:', origin);
+    console.log('Is local network:', isLocalNetwork);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (allowedOrigins.indexOf(origin) !== -1 || isLocalNetwork) {
       console.log('Origin allowed');
       callback(null, true);
     } else {
@@ -86,7 +90,9 @@ app.use((req, res) => {
   res.status(404).json({ message: 'API route not found' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Accessible from other devices at: http://YOUR_IP_ADDRESS:${PORT}`);
+  console.log('To find your IP address, run: ipconfig (Windows) or ifconfig (Mac/Linux)');
 });
 

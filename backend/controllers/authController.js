@@ -10,8 +10,17 @@ const getUsers = () => {
 const login = (req, res) => {
   try {
     const { username, password } = req.body;
+    
+    console.log('Login attempt:', { 
+      username, 
+      password: password ? '***' : 'undefined',
+      origin: req.headers.origin,
+      userAgent: req.headers['user-agent'],
+      ip: req.ip || req.connection.remoteAddress
+    });
 
     if (!username || !password) {
+      console.log('Missing credentials:', { username: !!username, password: !!password });
       return res.status(400).json({ 
         success: false, 
         message: 'Username and password are required' 
@@ -19,9 +28,13 @@ const login = (req, res) => {
     }
 
     const users = getUsers();
+    console.log('Available users:', users.map(u => ({ username: u.username, role: u.role })));
+    
     const user = users.find(u => u.username === username && u.password === password);
+    console.log('User found:', !!user);
 
     if (!user) {
+      console.log('Invalid credentials for username:', username);
       return res.status(401).json({ 
         success: false, 
         message: 'Invalid credentials' 
@@ -29,6 +42,7 @@ const login = (req, res) => {
     }
 
     const { password: _, ...userWithoutPassword } = user;
+    console.log('Login successful for user:', user.username);
 
     res.json({
       success: true,
