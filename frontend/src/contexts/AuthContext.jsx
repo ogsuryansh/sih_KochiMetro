@@ -53,16 +53,24 @@ export const AuthProvider = ({ children }) => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Try multiple API URLs as fallback
-      const apiUrls = [
-        config.API_URL,
-        'https://sihkochimetro.vercel.app', // Direct backend URL
-        'http://localhost:5000',
-        `http://${window.location.hostname}:5000`
-      ];
+      let apiUrls = [];
       
-      // Force production URL first if on Netlify/Vercel
+      // FORCE PRODUCTION URL FIRST if on Netlify/Vercel
       if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
-        apiUrls.unshift('https://sihkochimetro.vercel.app');
+        apiUrls = [
+          'https://sihkochimetro.vercel.app', // Force production first
+          config.API_URL,
+          'http://localhost:5000',
+          `http://${window.location.hostname}:5000`
+        ];
+        console.log('🚀 FORCING PRODUCTION URL FIRST for Netlify/Vercel');
+      } else {
+        apiUrls = [
+          config.API_URL,
+          'https://sihkochimetro.vercel.app', // Direct backend URL
+          'http://localhost:5000',
+          `http://${window.location.hostname}:5000`
+        ];
       }
       
       let response;
@@ -140,16 +148,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   const testApiConnection = async () => {
-    const apiUrls = [
-      config.API_URL,
-      'https://sihkochimetro.vercel.app',
-      'http://localhost:5000',
-      `http://${window.location.hostname}:5000`
-    ];
+    let apiUrls = [];
     
-    // Force production URL first if on Netlify/Vercel
+    // FORCE PRODUCTION URL FIRST if on Netlify/Vercel
     if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
-      apiUrls.unshift('https://sihkochimetro.vercel.app');
+      apiUrls = [
+        'https://sihkochimetro.vercel.app', // Force production first
+        config.API_URL,
+        'http://localhost:5000',
+        `http://${window.location.hostname}:5000`
+      ];
+      console.log('🚀 FORCING PRODUCTION URL FIRST for Netlify/Vercel');
+    } else {
+      apiUrls = [
+        config.API_URL,
+        'https://sihkochimetro.vercel.app',
+        'http://localhost:5000',
+        `http://${window.location.hostname}:5000`
+      ];
     }
     
     for (const apiUrl of apiUrls) {
