@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import Card from '../components/Card';
 
 const AIPlanningPage = () => {
   const { user } = useAuth();
+  const [weights, setWeights] = useState({ mileage: 0.6, fitness: 0.4 });
+  const [inductionTime, setInductionTime] = useState('');
+  const [serviceCount, setServiceCount] = useState(20);
+  const [standbyCount, setStandbyCount] = useState(3);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [result, setResult] = useState(null);
+
+  const runPlan = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/ai/plan/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          weights,
+          inductionTime: inductionTime || new Date().toISOString(),
+          serviceCount: Number(serviceCount),
+          standbyCount: Number(standbyCount)
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || data.success === false) throw new Error(data.error || data.message || 'Failed');
+      setResult(data);
+    } catch (e) {
+      setError(e.message || 'Failed to run plan');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -18,26 +49,82 @@ const AIPlanningPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="px-6 py-6">
-        <Card className="text-center py-16">
-          <div className="flex flex-col items-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
+      <div className="px-6 py-6 space-y-6">
+        <Card className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="block text-sm text-gray-400 mb-2">Mileage Weight</label>
+              <input type="range" min="0" max="1" step="0.05" value={weights.mileage} onChange={(e) => setWeights(w => ({ ...w, mileage: Number(e.target.value) }))} className="w-full" />
+              <div className="text-gray-300 text-sm mt-1">{weights.mileage.toFixed(2)}</div>
             </div>
-            <h2 className="text-3xl font-bold text-white mb-4">AI Planning</h2>
-            <p className="text-gray-400 text-lg mb-6 max-w-md">
-              Intelligent planning algorithms and predictive analytics are coming soon. Get ready for next-generation AI optimization.
-            </p>
-            <div className="inline-flex items-center px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg text-sm font-medium">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Coming Soon
+            <div>
+              <label className="block text-sm text-gray-400 mb-2">Fitness Weight</label>
+              <input type="range" min="0" max="1" step="0.05" value={weights.fitness} onChange={(e) => setWeights(w => ({ ...w, fitness: Number(e.target.value) }))} className="w-full" />
+              <div className="text-gray-300 text-sm mt-1">{weights.fitness.toFixed(2)}</div>
+            </div>
+            <div>
+              <label className="block text-sm text-gray-400 mb-2">Induction Time</label>
+              <input type="datetime-local" value={inductionTime} onChange={(e) => setInductionTime(e.target.value)} className="w-full bg-gray-800 text-gray-200 rounded px-3 py-2" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm text-gray-400 mb-2">Service Count</label>
+                <input type="number" min="0" value={serviceCount} onChange={(e) => setServiceCount(e.target.value)} className="w-full bg-gray-800 text-gray-200 rounded px-3 py-2" />
+              </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-2">Standby Count</label>
+                <input type="number" min="0" value={standbyCount} onChange={(e) => setStandbyCount(e.target.value)} className="w-full bg-gray-800 text-gray-200 rounded px-3 py-2" />
+              </div>
             </div>
           </div>
+          <div className="mt-4 flex items-center gap-3">
+            <button onClick={runPlan} disabled={loading} className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded disabled:opacity-50">
+              {loading ? 'Running…' : 'Run AI Optimization'}
+            </button>
+            {error && <span className="text-red-400 text-sm">{error}</span>}
+          </div>
         </Card>
+
+        {result && (
+          <Card className="p-4 sm:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-semibold">Results</h3>
+              <div className="text-gray-400 text-sm">Service {result.summary?.service} · Standby {result.summary?.standby} · IBL {result.summary?.ibl}</div>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-left">
+                <thead className="text-gray-400 text-sm">
+                  <tr>
+                    <th className="py-2 pr-4">Train ID</th>
+                    <th className="py-2 pr-4">Assignment</th>
+                    <th className="py-2 pr-4">Mileage</th>
+                    <th className="py-2 pr-4">Fitness</th>
+                    <th className="py-2 pr-4">Score</th>
+                    <th className="py-2 pr-4">Reasons</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-200 text-sm">
+                  {result.items?.map((item) => (
+                    <tr key={item.trainId} className="border-t border-gray-800">
+                      <td className="py-2 pr-4">{item.trainId}</td>
+                      <td className="py-2 pr-4">
+                        <span className={
+                          item.assignment === 'Service' ? 'text-green-400' : item.assignment === 'Standby' ? 'text-yellow-400' : 'text-red-400'
+                        }>{item.assignment}</span>
+                      </td>
+                      <td className="py-2 pr-4">{item.mileage}</td>
+                      <td className="py-2 pr-4">{item.fitness}</td>
+                      <td className="py-2 pr-4">{(item.score * 100).toFixed(0)}%</td>
+                      <td className="py-2 pr-4 max-w-xl">
+                        <div className="text-gray-400 truncate">{(item.reasons || []).slice(0, 3).join(' · ')}</div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration
+// CORS configuration - Production Ready
 const corsOptions = {
   origin: function (origin, callback) {
     console.log('CORS request from origin:', origin);
@@ -16,25 +16,33 @@ const corsOptions = {
       return callback(null, true);
     }
     
+    // Allow all origins in development
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Development mode - allowing all origins');
+      return callback(null, true);
+    }
+    
+    // Production: Allow specific domains
     const allowedOrigins = [
-      'http://localhost:5173', 
-      'http://localhost:3000', 
+      'http://localhost:5173',
+      'http://localhost:3000',
       'http://127.0.0.1:5173',
       'https://mainkochimetro.netlify.app',
       'https://mainkochimetro.netlify.app/',
       'https://playful-khapse-1b40b2.netlify.app',
-      'https://playful-khapse-1b40b2.netlify.app/'
+      'https://playful-khapse-1b40b2.netlify.app/',
+      // Add your production frontend domains here
+      'https://your-frontend-domain.netlify.app',
+      'https://your-frontend-domain.vercel.app',
+      'https://sihkochimetro.vercel.app',
+      'https://sihkochimetro.vercel.app/'
     ];
     
-    // Allow all local network origins (192.168.x.x, 10.x.x.x, 172.16-31.x.x)
+    // Allow local network origins
     const isLocalNetwork = /^(http:\/\/)?(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(origin);
     
-    console.log('Allowed origins:', allowedOrigins);
-    console.log('Checking origin:', origin);
-    console.log('Is local network:', isLocalNetwork);
-    
     if (allowedOrigins.indexOf(origin) !== -1 || isLocalNetwork) {
-      console.log('Origin allowed');
+      console.log('Origin allowed:', origin);
       callback(null, true);
     } else {
       console.log('Origin not allowed:', origin);

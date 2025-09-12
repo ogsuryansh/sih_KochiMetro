@@ -1,19 +1,42 @@
-// API Configuration
-// Update this file with your computer's IP address for other devices to access
+// API Configuration - Production Ready
+import productionConfig from './production-config.js';
 
 const config = {
-  // For local development, use your computer's IP address instead of localhost
-  // Find your IP with: ipconfig (Windows) or ifconfig (Mac/Linux)
-  // Replace YOUR_IP_ADDRESS with your actual IP address
-  
-  // Local development (replace YOUR_IP_ADDRESS with your actual IP)
-  API_URL: 'http://YOUR_IP_ADDRESS:5000',
-  
-  // Alternative: Use localhost if testing only on the same machine
-  // API_URL: 'http://localhost:5000',
-  
-  // Production (uncomment when deploying)
-  // API_URL: 'https://your-production-api-url.com'
+  get API_URL() {
+    // Check for environment variables first (highest priority)
+    if (import.meta.env.VITE_API_URL) {
+      console.log('Using environment API URL:', import.meta.env.VITE_API_URL);
+      return import.meta.env.VITE_API_URL;
+    }
+    
+    // Check if we're in production (deployed)
+    const isProduction = window.location.protocol === 'https:' || 
+                        (window.location.hostname !== 'localhost' && 
+                         !window.location.hostname.startsWith('192.168.') &&
+                         !window.location.hostname.startsWith('10.') &&
+                         !window.location.hostname.startsWith('172.') &&
+                         !window.location.hostname.includes('127.0.0.1'));
+    
+    if (isProduction) {
+      // In production, use the configured production API URL
+      console.log('Production mode - using API URL:', productionConfig.API_URL);
+      return productionConfig.API_URL;
+    }
+    
+    // Development mode - auto-detect based on hostname
+    const hostname = window.location.hostname;
+    
+    // If running on localhost or 127.0.0.1, use localhost for API
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      console.log('Development mode - using localhost API');
+      return 'http://localhost:5000';
+    }
+    
+    // If running on any other IP (like 192.168.x.x), use the same IP for API
+    const devUrl = `http://${hostname}:5000`;
+    console.log('Development mode - using IP API:', devUrl);
+    return devUrl;
+  }
 };
 
 export default config;

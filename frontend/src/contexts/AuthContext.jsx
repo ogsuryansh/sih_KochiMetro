@@ -52,7 +52,30 @@ export const AuthProvider = ({ children }) => {
       
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const response = await axios.post(`${config.API_URL}/api/auth/login`, credentials);
+      // Try multiple API URLs as fallback
+      const apiUrls = [
+        config.API_URL,
+        'http://localhost:5000',
+        `http://${window.location.hostname}:5000`
+      ];
+      
+      let response;
+      let lastError;
+      
+      for (const apiUrl of apiUrls) {
+        try {
+          console.log('Trying API URL:', apiUrl);
+          response = await axios.post(`${apiUrl}/api/auth/login`, credentials);
+          break; // Success, exit the loop
+        } catch (error) {
+          console.log('Failed to connect to:', apiUrl, error.message);
+          lastError = error;
+        }
+      }
+      
+      if (!response) {
+        throw lastError || new Error('Could not connect to any API endpoint');
+      }
       
       if (response.data.success) {
         const { user: userData, token: userToken } = response.data;
@@ -77,7 +100,21 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(`${config.API_URL}/api/auth/logout`);
+      // Try multiple API URLs as fallback
+      const apiUrls = [
+        config.API_URL,
+        'http://localhost:5000',
+        `http://${window.location.hostname}:5000`
+      ];
+      
+      for (const apiUrl of apiUrls) {
+        try {
+          await axios.post(`${apiUrl}/api/auth/logout`);
+          break; // Success, exit the loop
+        } catch (error) {
+          console.log('Logout failed for:', apiUrl, error.message);
+        }
+      }
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
