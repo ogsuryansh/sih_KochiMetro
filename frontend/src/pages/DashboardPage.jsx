@@ -47,12 +47,16 @@ const DashboardPage = () => {
 
   const fetchFleetSummary = async () => {
     try {
-      const response = await axios.get(`${config.API_URL}/api/dashboard/summary`);
+      const apiUrl = config.API_URL;
+      console.log('🔧 Dashboard fetchFleetSummary using API URL:', apiUrl);
+      console.log('🔧 Full URL:', `${apiUrl}/api/dashboard/summary`);
+      const response = await axios.get(`${apiUrl}/api/dashboard/summary`);
       if (response.data.success) {
         setFleetSummary(response.data.data);
       }
     } catch (error) {
       console.error('Error fetching fleet summary:', error);
+      console.error('Error details:', error.config?.url);
       setNotification({
         isVisible: true,
         message: 'Failed to fetch fleet data',
@@ -64,12 +68,16 @@ const DashboardPage = () => {
   const fetchTrains = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${config.API_URL}/api/dashboard/trains`);
+      const apiUrl = config.API_URL;
+      console.log('🔧 Dashboard fetchTrains using API URL:', apiUrl);
+      console.log('🔧 Full URL:', `${apiUrl}/api/dashboard/trains`);
+      const response = await axios.get(`${apiUrl}/api/dashboard/trains`);
       if (response.data.success) {
         setTrains(response.data.data);
       }
     } catch (error) {
       console.error('Error fetching trains:', error);
+      console.error('Error details:', error.config?.url);
       setNotification({
         isVisible: true,
         message: 'Failed to fetch train data',

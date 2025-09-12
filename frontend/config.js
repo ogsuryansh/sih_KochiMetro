@@ -9,6 +9,7 @@ const config = {
     console.log('- Hostname:', window.location.hostname);
     console.log('- Environment VITE_API_URL:', import.meta.env.VITE_API_URL);
     console.log('- All env vars:', import.meta.env);
+    console.log('- Production config API_URL:', productionConfig.API_URL);
     
     // FORCE PRODUCTION URL FOR NETLIFY/VERCEL - This will override everything
     if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
@@ -20,6 +21,12 @@ const config = {
     if (import.meta.env.VITE_API_URL) {
       console.log('✅ Using environment API URL:', import.meta.env.VITE_API_URL);
       return import.meta.env.VITE_API_URL;
+    }
+    
+    // Check if we're in a deployed environment (Netlify/Vercel)
+    if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app')) {
+      console.log('🚀 Deployed environment detected, forcing production URL');
+      return 'https://sihkochimetro.vercel.app';
     }
     
     // Check if we're in production (deployed)
@@ -38,9 +45,11 @@ const config = {
       return productionConfig.API_URL;
     }
     
-    // Development mode - use production config as fallback
-    console.log('⚠️ No environment variable found, using production config as fallback');
-    return productionConfig.API_URL;
+    // Final fallback - always use production URL
+    console.log('⚠️ No environment variable found, using production URL as fallback');
+    const fallbackUrl = 'https://sihkochimetro.vercel.app';
+    console.log('🔧 Final API_URL being returned:', fallbackUrl);
+    return fallbackUrl;
   }
 };
 
