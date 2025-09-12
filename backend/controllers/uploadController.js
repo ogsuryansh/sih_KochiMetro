@@ -5,10 +5,18 @@ const { processFile } = require('../processors/fileProcessor');
 const { processFileSmart } = require('../processors/smartProcessor');
 const { validateTrainData } = require('../validators/trainValidator');
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
+// Configure multer for file uploads - Dynamic for serverless environments
+const storage = multer.memoryStorage(); // Use memory storage for serverless environments
+
+// Alternative disk storage for local development
+const diskStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    const uploadDir = process.env.UPLOAD_DIR || 'uploads/';
+    // Ensure directory exists
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -16,8 +24,11 @@ const storage = multer.diskStorage({
   }
 });
 
+// Use memory storage in production (serverless) or disk storage in development
+const storageConfig = process.env.NODE_ENV === 'production' ? storage : diskStorage;
+
 const upload = multer({
-  storage: storage,
+  storage: storageConfig,
   limits: { 
     fileSize: 10 * 1024 * 1024, // 10MB limit
     files: 1 // Only one file at a time
@@ -92,14 +103,23 @@ const uploadFile = async (req, res) => {
       });
     }
 
-    tempFilePath = req.file.path;
     const fileType = path.extname(req.file.originalname).toLowerCase();
     const originalFileName = req.file.originalname;
     
     console.log(`Processing file: ${originalFileName} (${fileType})`);
     
-    // Process the file with smart mapping
-    const processResult = await processFileSmart(tempFilePath, fileType);
+    // Handle file processing based on storage type
+    let processResult;
+    if (req.file.buffer) {
+      // Memory storage (production/serverless)
+      console.log('Processing file from memory buffer');
+      processResult = await processFileSmart(req.file.buffer, fileType, originalFileName);
+    } else {
+      // Disk storage (development)
+      tempFilePath = req.file.path;
+      console.log('Processing file from disk:', tempFilePath);
+      processResult = await processFileSmart(tempFilePath, fileType);
+    }
     const processedData = processResult.data;
     console.log(`Processed ${processedData.length} records from file`);
     console.log('Field mapping used:', processResult.mapping);

@@ -1,11 +1,22 @@
 const csv = require('csv-parser');
 const fs = require('fs');
+const { Readable } = require('stream');
 
-const processCSV = (filePath) => {
+const processCSV = (filePathOrBuffer, originalFileName = null) => {
   return new Promise((resolve, reject) => {
     const results = [];
+    let stream;
     
-    fs.createReadStream(filePath)
+    // Handle both file paths and memory buffers
+    if (Buffer.isBuffer(filePathOrBuffer)) {
+      // Memory buffer - create readable stream
+      stream = Readable.from(filePathOrBuffer);
+    } else {
+      // File path - create file stream
+      stream = fs.createReadStream(filePathOrBuffer);
+    }
+    
+    stream
       .pipe(csv())
       .on('data', (data) => {
         console.log('CSV row data:', data);

@@ -1,10 +1,19 @@
 const xml2js = require('xml2js');
 const fs = require('fs');
 
-const processXML = (filePath) => {
+const processXML = (filePathOrBuffer, originalFileName = null) => {
   return new Promise((resolve, reject) => {
     try {
-      const fileContent = fs.readFileSync(filePath, 'utf8');
+      let fileContent;
+      
+      // Handle both file paths and memory buffers
+      if (Buffer.isBuffer(filePathOrBuffer)) {
+        // Memory buffer - convert to string
+        fileContent = filePathOrBuffer.toString('utf8');
+      } else {
+        // File path - read from file
+        fileContent = fs.readFileSync(filePathOrBuffer, 'utf8');
+      }
       
       const parser = new xml2js.Parser({
         explicitArray: false,

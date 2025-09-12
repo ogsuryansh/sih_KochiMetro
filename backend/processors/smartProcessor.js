@@ -196,26 +196,26 @@ const applySmartMapping = (data, mapping) => {
   }).filter(item => item.trainId); // Only include items with trainId
 };
 
-// Enhanced file processor with smart mapping
-const processFileSmart = async (filePath, fileType) => {
+// Enhanced file processor with smart mapping - supports both file paths and memory buffers
+const processFileSmart = async (filePathOrBuffer, fileType, originalFileName = null) => {
   try {
     const ext = fileType.toLowerCase();
     let rawData;
     
-    // Process file based on type
+    // Process file based on type - handle both file paths and memory buffers
     switch (ext) {
       case '.csv':
-        rawData = await processCSV(filePath);
+        rawData = await processCSV(filePathOrBuffer, originalFileName);
         break;
       case '.json':
-        rawData = await processJSON(filePath);
+        rawData = await processJSON(filePathOrBuffer, originalFileName);
         break;
       case '.xlsx':
       case '.xls':
-        rawData = await processExcel(filePath);
+        rawData = await processExcel(filePathOrBuffer, originalFileName);
         break;
       case '.xml':
-        rawData = await processXML(filePath);
+        rawData = await processXML(filePathOrBuffer, originalFileName);
         break;
       default:
         throw new Error(`Unsupported file type: ${fileType}`);

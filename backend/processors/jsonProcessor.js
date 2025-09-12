@@ -1,9 +1,19 @@
 const fs = require('fs');
 
-const processJSON = (filePath) => {
+const processJSON = (filePathOrBuffer, originalFileName = null) => {
   return new Promise((resolve, reject) => {
     try {
-      const fileContent = fs.readFileSync(filePath, 'utf8');
+      let fileContent;
+      
+      // Handle both file paths and memory buffers
+      if (Buffer.isBuffer(filePathOrBuffer)) {
+        // Memory buffer - convert to string
+        fileContent = filePathOrBuffer.toString('utf8');
+      } else {
+        // File path - read from file
+        fileContent = fs.readFileSync(filePathOrBuffer, 'utf8');
+      }
+      
       const jsonData = JSON.parse(fileContent);
       
       // Handle both array and single object

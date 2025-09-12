@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration - Production Ready
+// CORS configuration - Dynamic and Production Ready
 const corsOptions = {
   origin: function (origin, callback) {
     console.log('CORS request from origin:', origin);
@@ -22,30 +22,34 @@ const corsOptions = {
       return callback(null, true);
     }
     
-    // Allow all origins for debugging - remove in production
-    console.log('Allowing all origins for debugging');
-    return callback(null, true);
-    
-    // Production: Allow specific domains
+    // Production: Dynamic CORS configuration
     const allowedOrigins = [
       'http://localhost:5173',
       'http://localhost:3000',
       'http://127.0.0.1:5173',
-      'https://mainkochimetro.netlify.app',
-      'https://mainkochimetro.netlify.app/',
-      'https://playful-khapse-1b40b2.netlify.app',
-      'https://playful-khapse-1b40b2.netlify.app/',
-      // Add your production frontend domains here
-      'https://your-frontend-domain.netlify.app',
-      'https://your-frontend-domain.vercel.app',
-      'https://sihkochimetro.vercel.app',
-      'https://sihkochimetro.vercel.app/'
+      // Add frontend URL from environment variable
+      process.env.FRONTEND_URL,
+      // Add common Netlify and Vercel patterns
+      /^https:\/\/.*\.netlify\.app$/,
+      /^https:\/\/.*\.vercel\.app$/,
+      // Add any additional origins from environment
+      ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [])
     ];
     
     // Allow local network origins
     const isLocalNetwork = /^(http:\/\/)?(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(origin);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || isLocalNetwork) {
+    // Check if origin matches any allowed pattern
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (typeof allowedOrigin === 'string') {
+        return allowedOrigin === origin;
+      } else if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return false;
+    });
+    
+    if (isAllowed || isLocalNetwork) {
       console.log('Origin allowed:', origin);
       callback(null, true);
     } else {
@@ -96,9 +100,12 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'Server is running',
     timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
     cors: 'enabled',
     origin: req.headers.origin,
-    userAgent: req.headers['user-agent']
+    userAgent: req.headers['user-agent'],
+    allowedOrigins: process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : 'dynamic',
+    version: process.env.npm_package_version || '1.0.0'
   });
 });
 

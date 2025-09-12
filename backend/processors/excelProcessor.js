@@ -1,9 +1,18 @@
 const XLSX = require('xlsx');
 
-const processExcel = (filePath) => {
+const processExcel = (filePathOrBuffer, originalFileName = null) => {
   return new Promise((resolve, reject) => {
     try {
-      const workbook = XLSX.readFile(filePath);
+      let workbook;
+      
+      // Handle both file paths and memory buffers
+      if (Buffer.isBuffer(filePathOrBuffer)) {
+        // Memory buffer - read from buffer
+        workbook = XLSX.read(filePathOrBuffer, { type: 'buffer' });
+      } else {
+        // File path - read from file
+        workbook = XLSX.readFile(filePathOrBuffer);
+      }
       const sheetName = workbook.SheetNames[0];
       
       if (!sheetName) {

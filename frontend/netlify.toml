@@ -4,6 +4,7 @@
 
 [build.environment]
   VITE_API_URL = "https://sihkochimetro.vercel.app"
+  NODE_ENV = "production"
 
 [[redirects]]
   from = "/*"
